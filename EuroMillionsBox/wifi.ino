@@ -87,3 +87,7 @@ int wifi_process() {
   _wifi_last_status = wifi_status;
   return event;
 }
+
+int wifi_ok() {
+  return _wifi_last_status == WL_CONNECTED;
+}

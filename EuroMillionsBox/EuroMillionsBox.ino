@@ -1,10 +1,13 @@
 #include <ESP8266HTTPClient.h>
 
+#include "button.h"
 #include "wifi.h"
 
 #define SERVER_URL "http://SOME_SERVER.example.com/euromillions.php"
 #define TITLE_FIRST_LINE "Euro"
 #define TITLE_SECOND_LINE "Milhoes"
+
+bool _displaying_results = 0;
 
 void draw_home_screen(const char *status) {
   display_clear(false);
@@ -50,22 +53,33 @@ void setup() {
   Serial.println("     ");
   display_setup();
   draw_home_screen("");
+  button_setup();
   wifi_setup();
 }
 
 void loop() {
+  int button_state = button_get_state();
+
   switch (wifi_process()) {
     case WIFI_EVENT_CONNECTING:
       draw_home_screen("A ligar...");
       break;
-    case WIFI_EVENT_CONNECTED:
-      draw_home_screen("A obter dados...");
-      get_results();
-      Serial.println("bye");
-      ESP.deepSleep(0, WAKE_RF_DEFAULT);
-      break;
     case WIFI_EVENT_ERROR:
       draw_home_screen("Erro WIFI!");
       break;
+  }
+
+  if (wifi_ok()) {
+    if (_displaying_results) {
+      if (button_state == BUTTON_STATE_LONG_PRESS) {
+        _displaying_results = 0; // ask for results again
+      }
+    } else {
+      draw_home_screen("A obter dados...");
+      get_results();
+      _displaying_results = 1;
+    }
+  } else if (_displaying_results) {
+    _displaying_results = 0;
   }
 }
