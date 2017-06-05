@@ -1,18 +1,19 @@
+#define LANG 'EN' // screen language (PT or EN)
+
 #include <ESP8266HTTPClient.h>
 
+#include "i18n.h"
 #include "button.h"
 #include "wifi.h"
 
 #define SERVER_URL "http://SOME_SERVER.example.com/euromillions.php"
-#define TITLE_FIRST_LINE "Euro"
-#define TITLE_SECOND_LINE "Milhoes"
 
 bool _displaying_results = 0;
 
 void draw_home_screen(const char *status) {
   display_clear(false);
-  display_draw_text(2, 10, 0, TITLE_FIRST_LINE);
-  display_draw_text(2, 128 - 10 - strlen(TITLE_SECOND_LINE)*12, 16, TITLE_SECOND_LINE);
+  display_draw_text(2, 10, 0, I18N_TITLE_FIRST_LINE);
+  display_draw_text(2, 128 - 10 - strlen(I18N_TITLE_SECOND_LINE)*12, 16, I18N_TITLE_SECOND_LINE);
   display_draw_text(1, 0, 40, status);
   display_flush();
 }
@@ -62,10 +63,10 @@ void loop() {
 
   switch (wifi_process()) {
     case WIFI_EVENT_CONNECTING:
-      draw_home_screen("A ligar...");
+      draw_home_screen(I18N_CONNECTING);
       break;
     case WIFI_EVENT_ERROR:
-      draw_home_screen("Erro WIFI!");
+      draw_home_screen(I18N_WIFI_ERROR);
       break;
   }
 
@@ -75,7 +76,7 @@ void loop() {
         _displaying_results = 0; // ask for results again
       }
     } else {
-      draw_home_screen("A obter dados...");
+      draw_home_screen(I18N_FETCHING_DATA);
       get_results();
       _displaying_results = 1;
     }
