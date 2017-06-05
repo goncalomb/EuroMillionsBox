@@ -1,12 +1,18 @@
-#define LANG 'EN' // screen language (PT or EN)
+// start configuration
+
+#define LANG        'EN' // language for the screen text (PT or EN)
+#define BUTTON_PIN  14
+#define WIFI_SSID   "YOUR_WIFI_SSID_HERE"
+#define WIFI_PASS   "YOUR_WIFI_PASS_HERE"
+#define SERVER_URL  "http://SOME_SERVER.example.com/euromillions.php"
+
+// end configuration
 
 #include <ESP8266HTTPClient.h>
 
 #include "i18n.h"
 #include "button.h"
 #include "wifi.h"
-
-#define SERVER_URL "http://SOME_SERVER.example.com/euromillions.php"
 
 bool _displaying_results = 0;
 
