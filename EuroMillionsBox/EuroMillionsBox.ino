@@ -32,8 +32,10 @@ void get_results() {
   int code = http.GET();
   if (code < 0) {
     Serial.println("request: error");
+    draw_home_screen(I18N_DATA_ERROR);
   } else if (code != HTTP_CODE_OK) {
     Serial.println("request: error (code != 200)");
+    draw_home_screen(I18N_DATA_ERROR);
   } else {
     Serial.println("request: ok");
     String result = http.getString();
