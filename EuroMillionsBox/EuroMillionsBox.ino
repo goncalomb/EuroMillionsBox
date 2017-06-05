@@ -1,3 +1,10 @@
+/*
+ * Copyright (c) 2017 Gonçalo Baltazar <me@goncalomb.com>
+ *
+ * EuroMillionsBox is released under the terms of the MIT License.
+ * See LICENSE.txt for details.
+ */
+
 // start configuration
 
 #define LANG        'EN' // language for the screen text (PT or EN)
