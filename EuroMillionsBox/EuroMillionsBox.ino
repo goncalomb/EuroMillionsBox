@@ -46,13 +46,19 @@ void get_results() {
   } else {
     Serial.println("request: ok");
     String result = http.getString();
-    result.trim();
     Serial.println("request: result = \"" + result + "\"");
-    int x = result.indexOf("|");
+    int i = result.indexOf("|");
+    if (result.substring(0, i) != "EM") {
+      Serial.println("request: result error");
+      draw_home_screen(I18N_DATA_ERROR);
+      return;
+    }
+    int x = result.indexOf("|", i + 1);
     int y = result.indexOf("|", x + 1);
-    String date = result.substring(0, x);
+    int z = result.indexOf("\n", y + 1);
+    String date = result.substring(i + 1, x);
     String n = result.substring(x + 1, y);
-    String s = result.substring(y + 1);
+    String s = result.substring(y + 1, z);
     display_clear(false);
     display_draw_text(2, 4, 0, date.c_str());
     display_draw_text(2, 4, 16, "N:");
