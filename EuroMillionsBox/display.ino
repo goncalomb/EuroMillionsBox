@@ -32,3 +32,11 @@ void display_clear(int auto_flush) {
     display.display();
   }
 }
+
+void display_draw_home_screen(const char *status) {
+  display_clear(false);
+  display_draw_text(2, 10, 0, I18N_TITLE_FIRST_LINE);
+  display_draw_text(2, 128 - 10 - strlen(I18N_TITLE_SECOND_LINE)*12, 16, I18N_TITLE_SECOND_LINE);
+  display_draw_text(1, 0, 40, status);
+  display_flush();
+}
