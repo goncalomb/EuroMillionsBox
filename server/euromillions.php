@@ -1,6 +1,7 @@
 <?php
 
-define('MAX_RESULTS', 8);
+define('MAX_EM_RESULTS', 8);
+define('INCLUDE_M1LHAO', true);
 
 header('Content-Type: text/plain; charset=utf-8');
 
@@ -18,7 +19,8 @@ function get_euromillions_results() {
 			$offset = $matches[0][1] + strlen($matches[0][0]); // move offset
 			$t = strtotime($matches[1][0] . ' ' . $month . ' ' . $year); // convert date to timestamp
 			$results[] = array(
-				'date' => date('d/m/Y', $t),
+				'type' => 'EM',
+				'date' => $t,
 				'n' => array_map(function($i) { return $i[0]; }, array_slice($matches, 2, 5)),
 				's' => array_map(function($i) { return $i[0]; }, array_slice($matches, 7, 2))
 			);
@@ -27,13 +29,47 @@ function get_euromillions_results() {
 	return $results;
 }
 
-if ($results = get_euromillions_results()) {
-	foreach (array_slice($results, 0, MAX_RESULTS) as $r) {
-		echo 'EM|', $r['date'], '|', implode(' ', $r['n']), '|', implode(' ', $r['s']), "\n";
+function get_m1lhao_results() {
+	$results = array();
+	$html = @file_get_contents('https://www.euro-millions.com/m1lhao');
+	if (preg_match_all('#</span><br>(\w+ \w+ \d{4})</a></td>\r?\n\s*<td style="text-align: center;">\r?\n\s*<div class="millionaire-raffle">(\w+)</div>#', $html, $matches, PREG_SET_ORDER)) {
+		foreach ($matches as $match) {
+			$results[] = array(
+				'type' => 'M1',
+				'date' => strtotime($match[1]),
+				'value' => $match[2]
+			);
+		}
+	}
+	return $results;
+}
+
+$all_results = array_slice(get_euromillions_results(), 0, MAX_EM_RESULTS);
+if (INCLUDE_M1LHAO) {
+	$all_results = array_merge($all_results, get_m1lhao_results());
+}
+
+usort($all_results, function($a, $b) {
+	if ($a['date'] == $b['date']) {
+		return ($a['type'] == 'EM' ? -1 : ($b['type'] == 'EM' ? 1 : 0));
+	}
+	return $b['date'] - $a['date'];
+});
+
+if ($all_results) {
+	foreach ($all_results as $r) {
+		echo $r['type'], '|', date('d/m/Y', $r['date']), '|';
+		if ($r['type'] == 'EM') {
+			echo implode(' ', $r['n']), '|', implode(' ', $r['s']);
+		} else if ($r['type'] == 'M1') {
+			echo $r['value'];
+		}
+		echo "\n";
 	}
 	exit();
 }
 
+header('Content-Type: text/plain; charset=utf-8', true, 500);
 echo "error\n";
 exit();
 
