@@ -57,6 +57,14 @@ usort($all_results, function($a, $b) {
 });
 
 if ($all_results) {
+	echo "#\n";
+	echo "# EuroMillionsBox server API\n";
+	echo "# https://github.com/goncalomb/EuroMillionsBox\n";
+	echo "#\n";
+	echo "# data scraped from euro-millions.com\n";
+	echo "# EM: EuroMillions\n";
+	echo "# M1: M1lhão\n";
+	echo "#\n";
 	foreach ($all_results as $r) {
 		echo $r['type'], '|', date('d/m/Y', $r['date']), '|';
 		if ($r['type'] == 'EM') {

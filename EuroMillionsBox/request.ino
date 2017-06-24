@@ -41,7 +41,7 @@ void _request_draw_result() {
     _request_draw_M1_result(i);
   } else {
       display_clear(false);
-      display_draw_text(2, 0, 0, (type + "?").c_str());
+      display_draw_text(2, 0, 0, "ERR ?");
       display_flush();
   }
 }
@@ -64,6 +64,14 @@ void request_get_results() {
     _request_result = http.getString();
     _request_result_pos = 0;
     Serial.println("request: result = \"" + _request_result + "\"");
+    // remove header comments
+    int i = 0;
+    while (_request_result.substring(i, i + 1) == "#") {
+      i = _request_result.indexOf("\n", i) + 1;
+    }
+    if (i > 0) {
+      _request_result = _request_result.substring(i);
+    }
     _request_draw_result();
   }
 }
