@@ -11,7 +11,11 @@
 #define BUTTON_PIN  14
 #define WIFI_SSID   "YOUR_WIFI_SSID_HERE"
 #define WIFI_PASS   "YOUR_WIFI_PASS_HERE"
-#define SERVER_URL  "http://SOME_SERVER.example.com/euromillions.php"
+
+// I'm hosting the server script at 'stuff.goncalomb.com'.
+// See 'server' directory, if you want to host it yourself.
+
+#define SERVER_URL  "http://stuff.goncalomb.com/euromillions.php"
 
 // end configuration
 
