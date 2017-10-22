@@ -4,6 +4,10 @@ EuroMillionsBox is a ESP8266 based device to fetch the latest EuroMillions draw 
 
 The Arduino based code can easily be changed to suit other purposes.
 
+![](images/animation.gif)
+![](images/image0_small.jpg)
+![](images/image1_small.jpg)
+
 ## Build Instructions ##
 
 The circuit is based on a [ESP-12F module](https://www.ebay.com/sch/i.html?_nkw=ESP-12F) with a [128x64 OLED display](https://www.ebay.com/sch/i.html?_nkw=128X64+OLED+I2C) and a [LD1117V33 regulator](https://www.ebay.com/sch/i.html?_nkw=LD1117V33). After building the [basic ESP-12 circuit](http://www.esp8266.com/wiki/doku.php?id=getting-started-with-the-esp8266) with reset and programming push buttons, connect the display to SCL and SDA (GPIO5 and GPIO4), the power button and the external push button between GPIO14 and ground.

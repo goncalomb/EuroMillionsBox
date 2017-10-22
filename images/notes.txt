@@ -1,0 +1,2 @@
+# animation.gif
+convert -crop 1780x1440+1350+330 +repage -resize 30% -delay 150 *.JPG animation.gif
