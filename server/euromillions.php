@@ -15,7 +15,7 @@ function get_euromillions_results() {
 		$month = $matches[1][0];
 		$year = $matches[2][0];
 		// search for each result
-		while (preg_match('#<td class="date"><span>\w+</span><br>(\d\d?)<sup>\w{2}</sup> ' .  preg_quote($month) . '</td>\r?\n<td class="centre">\r?\n(\d\d) - (\d\d) - (\d\d) - (\d\d) - (\d\d)</td>\r?\n<td class="centre">\r?\n(\d\d) - (\d\d)</td>#', $html, $matches, PREG_OFFSET_CAPTURE, $offset)) {
+		while (preg_match('#<td class="date"><span>\w+</span><br>(\d\d?)<sup>\w{2}</sup> ' .  preg_quote($month) . '</td>\r?\n<td class="centre">\r?\n\s*<ul class="balls small">\r?\n\s*<li class="new ball">(\d\d?)</li>\r?\n\s*<li class="new ball">(\d\d?)</li>\r?\n\s*<li class="new ball">(\d\d?)</li>\r?\n\s*<li class="new ball">(\d\d?)</li>\r?\n\s*<li class="new ball">(\d\d?)</li>\r?\n\s*</ul>\r?\n</td>\r?\n<td class="centre">\r?\n\s*<ul class="balls small">\r?\n\s*<li class="new lucky-star">(\d\d?)</li>\r?\n\s*<li class="new lucky-star">(\d\d?)</li>\r?\n\s*</ul>\r?\n</td>#', $html, $matches, PREG_OFFSET_CAPTURE, $offset)) {
 			$offset = $matches[0][1] + strlen($matches[0][0]); // move offset
 			$t = strtotime($matches[1][0] . ' ' . $month . ' ' . $year); // convert date to timestamp
 			$results[] = array(
