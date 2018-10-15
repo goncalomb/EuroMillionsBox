@@ -21,8 +21,8 @@ function get_euromillions_results() {
 			$results[] = array(
 				'type' => 'EM',
 				'date' => $t,
-				'n' => array_map(function($i) { return $i[0]; }, array_slice($matches, 2, 5)),
-				's' => array_map(function($i) { return $i[0]; }, array_slice($matches, 7, 2))
+				'n' => array_map(function($i) { return str_pad($i[0], 2, '0', STR_PAD_LEFT); }, array_slice($matches, 2, 5)),
+				's' => array_map(function($i) { return str_pad($i[0], 2, '0', STR_PAD_LEFT); }, array_slice($matches, 7, 2))
 			);
 		}
 	}
