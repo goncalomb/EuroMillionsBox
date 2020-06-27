@@ -10,12 +10,12 @@ function get_euromillions_results() {
 	$html = @file_get_contents('https://www.euro-millions.com/results');
 	$offset = 0; // search offset
 	// search for the month header
-	while (preg_match('#<tr class="dateRow">\r?\n<th colspan="5" class="lefty">(\w+) (\d{4})</td>\r?\n</tr>#', $html, $matches, PREG_OFFSET_CAPTURE, $offset)) {
+	while (preg_match('#<tr class="dateRow">\s*<th colspan="5" class="lefty">(\w+) (\d{4})</td>\s*</tr>#', $html, $matches, PREG_OFFSET_CAPTURE, $offset)) {
 		$offset = $matches[0][1] + strlen($matches[0][0]); // move offset
 		$month = $matches[1][0];
 		$year = $matches[2][0];
 		// search for each result
-		while (preg_match('#<td class="date"><span>\w+</span><br>(\d\d?)<sup>\w{2}</sup> ' .  preg_quote($month) . '</td>\r?\n<td class="centre">\r?\n\s*<ul class="balls small">\r?\n\s*<li class="new ball">(\d\d?)</li>\r?\n\s*<li class="new ball">(\d\d?)</li>\r?\n\s*<li class="new ball">(\d\d?)</li>\r?\n\s*<li class="new ball">(\d\d?)</li>\r?\n\s*<li class="new ball">(\d\d?)</li>\r?\n\s*</ul>\r?\n</td>\r?\n<td class="centre">\r?\n\s*<ul class="balls small">\r?\n\s*<li class="new lucky-star">(\d\d?)</li>\r?\n\s*<li class="new lucky-star">(\d\d?)</li>\r?\n\s*</ul>\r?\n</td>#', $html, $matches, PREG_OFFSET_CAPTURE, $offset)) {
+		while (preg_match('#<td class="date">\s*<span>\s*\w+\s*</span>\s*<br>\s*(\d\d?)\s*<sup>\s*\w{2}\s*</sup> ' . preg_quote($month) . '\s*</td>\s*<td class="centre">\s*<ul class="balls small">\s*<li class="new ball">(\d\d?)</li>\s*<li class="new ball">(\d\d?)</li>\s*<li class="new ball">(\d\d?)</li>\s*<li class="new ball">(\d\d?)</li>\s*<li class="new ball">(\d\d?)</li>\s*</ul>\s*</td>\s*<td class="centre">\s*<ul class="balls small">\s*<li class="new lucky-star">(\d\d?)</li>\s*<li class="new lucky-star">(\d\d?)</li>\s*</ul>\s*</td>#', $html, $matches, PREG_OFFSET_CAPTURE, $offset)) {
 			$offset = $matches[0][1] + strlen($matches[0][0]); // move offset
 			$t = strtotime($matches[1][0] . ' ' . $month . ' ' . $year); // convert date to timestamp
 			$results[] = array(
